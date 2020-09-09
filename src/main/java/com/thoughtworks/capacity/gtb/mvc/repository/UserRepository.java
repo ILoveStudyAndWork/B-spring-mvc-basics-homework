@@ -20,7 +20,7 @@ public class UserRepository {
 
     public Boolean contain(String username){
         for (int i = 0; i < users.size(); i++){
-            if (users.get(i).getUserName().equals(username)) {
+            if (users.get(i).getUsername().equals(username)) {
                 return true;
             }
         }
@@ -33,7 +33,7 @@ public class UserRepository {
 
     public User getUserByUserName(String username) throws UserNotExistException {
         for (int i = 0; i < users.size(); i++){
-            if (users.get(i).getUserName().equals(username)) {
+            if (users.get(i).getUsername().equals(username)) {
                 return users.get(i);
             }
         }
