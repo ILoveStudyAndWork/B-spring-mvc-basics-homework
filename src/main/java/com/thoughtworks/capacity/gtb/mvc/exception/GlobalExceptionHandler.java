@@ -22,4 +22,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResult);
     }
 
+    @ExceptionHandler(LoginParamsNotValidException.class)
+    public ResponseEntity<ErrorResult> handleUserNotExistException(LoginParamsNotValidException ex) {
+        String message = ex.getMessage();
+        ErrorResult errorResult = new ErrorResult(message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResult);
+    }
+
+    @ExceptionHandler(UserNameOrPasswordWrongException.class)
+    public ResponseEntity<ErrorResult> handleLoginException(UserNameOrPasswordWrongException ex) {
+        String message = ex.getMessage();
+        ErrorResult errorResult = new ErrorResult(message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResult);
+    }
+
+
+
 }

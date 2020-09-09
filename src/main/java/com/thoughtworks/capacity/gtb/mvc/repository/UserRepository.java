@@ -1,7 +1,7 @@
 package com.thoughtworks.capacity.gtb.mvc.repository;
 
-import com.thoughtworks.capacity.gtb.mvc.domain.UserRequest;
 import com.thoughtworks.capacity.gtb.mvc.domain.User;
+import com.thoughtworks.capacity.gtb.mvc.exception.UserNotExistException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +18,6 @@ public class UserRepository {
         users.add(user);
     }
 
-    public void delete(User user){
-        users.remove(user);
-    }
-
-    public List<User> getAll(){
-        return users;
-    }
-
     public Boolean contain(String username){
         for (int i = 0; i < users.size(); i++){
             if (users.get(i).getUserName().equals(username)) {
@@ -39,4 +31,12 @@ public class UserRepository {
         return users.size();
     }
 
+    public User getUserByUserName(String username) throws UserNotExistException {
+        for (int i = 0; i < users.size(); i++){
+            if (users.get(i).getUserName().equals(username)) {
+                return users.get(i);
+            }
+        }
+        throw new UserNotExistException();
+    }
 }
