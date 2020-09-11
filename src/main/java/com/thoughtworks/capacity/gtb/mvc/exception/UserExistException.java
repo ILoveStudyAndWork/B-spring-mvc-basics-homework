@@ -1,7 +1,9 @@
 package com.thoughtworks.capacity.gtb.mvc.exception;
 
+import com.thoughtworks.capacity.gtb.mvc.common.constants.ExceptionMessageConstants;
+
 public class UserExistException extends Error{
-    private String message = "用户名已存在";
+    private String message = ExceptionMessageConstants.USER_EXISTED;
 
     @Override
     public String getMessage() {

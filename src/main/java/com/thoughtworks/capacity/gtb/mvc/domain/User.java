@@ -1,5 +1,6 @@
 package com.thoughtworks.capacity.gtb.mvc.domain;
 
+import com.thoughtworks.capacity.gtb.mvc.common.constants.ExceptionMessageConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,16 +17,16 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class User {
     private int id;
-    @Size(max = 10,min = 3,message = "用户名长度为3到10位")
-    @NotEmpty(message = "用户名不能为空")
-    @Pattern(regexp = "^[\\u4e00-\\u9fa5_a-zA-Z0-9]+$",message = "只能由字母、数字或下划线组成")
+    @Size(max = 10,min = 3,message = ExceptionMessageConstants.USER_NAME_LENGTH_ERROR)
+    @NotEmpty(message = ExceptionMessageConstants.USER_NAME_CAN_NOT_BE_NOT)
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5_a-zA-Z0-9]+$",message = ExceptionMessageConstants.USER_CONTENT_ERROR)
     private String username;
 
-    @NotEmpty(message = "密码不能为空")
-    @Size(max = 12,min = 5,message = "密码，长度为5到12位")
+    @NotEmpty(message = ExceptionMessageConstants.PASSWORD_CAN_NOT_BE_NOT)
+    @Size(max = 12,min = 5,message = ExceptionMessageConstants.PASSWORD_LENGTH_ERROR)
     private String password;
 
-    @Email(message = "邮箱地址不合法")
+    @Email(message = ExceptionMessageConstants.ILLEGAL_EMAIL)
     private String email;
 
 }

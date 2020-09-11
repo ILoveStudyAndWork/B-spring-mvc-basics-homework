@@ -1,10 +1,9 @@
 package com.thoughtworks.capacity.gtb.mvc.service;
 
 import com.thoughtworks.capacity.gtb.mvc.domain.User;
-import com.thoughtworks.capacity.gtb.mvc.exception.LoginParamsNotValidException;
+import com.thoughtworks.capacity.gtb.mvc.exception.LoginParamsIllegalException;
 import com.thoughtworks.capacity.gtb.mvc.exception.UserExistException;
 import com.thoughtworks.capacity.gtb.mvc.exception.UserNameOrPasswordWrongException;
-import com.thoughtworks.capacity.gtb.mvc.exception.UserNotExistException;
 import com.thoughtworks.capacity.gtb.mvc.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,31 +11,27 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     UserRepository userRepository;
-    private final static String USER_NOT_VALID = "用户名不合法";
-    private final static String PASSWORD_NOT_VALID = "密码不合法";
 
     public UserService() {
         userRepository = new UserRepository();
     }
 
     public void register(User user){
-        if (userRepository.contain(user.getUsername())){
+        if (userRepository.isExistByUsername(user.getUsername())){
             throw new UserExistException();
         }
-
-        int id = userRepository.size();
+        int id = userRepository.count();
         user.setId(id);
-        userRepository.addUser(user);
+        userRepository.save(user);
     }
 
 
-    public User login(String username, String password) throws UserNotExistException, UserNameOrPasswordWrongException, LoginParamsNotValidException {
-        validateParam(username,password);
-        if (!userRepository.contain(username)){
+    public User login(String username, String password) throws Exception {
+        if (!userRepository.isExistByUsername(username)){
             throw new UserNameOrPasswordWrongException();
         }
-        User user = userRepository.getUserByUserName(username);
-        if (user.getPassword().equals(password)){
+        User user = userRepository.findUserByUserName(username);
+        if (password.equals(user.getPassword())){
             return user;
         }
         else {
@@ -44,14 +39,5 @@ public class UserService {
         }
     }
 
-    void validateParam(String username, String password) throws LoginParamsNotValidException {
-        String regex = "^[\\u4e00-\\u9fa5_a-zA-Z0-9]+$";
-        Boolean is = regex.matches(username);
-        if (username.length() > 10 || username.length() < 3 || !username.matches(regex))
-            throw new LoginParamsNotValidException(USER_NOT_VALID);
-        if (password.length() > 12 || password.length() < 5 || !password.matches(regex))
-            throw new LoginParamsNotValidException(PASSWORD_NOT_VALID);
-
-    }
 
 }

@@ -1,7 +1,9 @@
 package com.thoughtworks.capacity.gtb.mvc.exception;
 
+import com.thoughtworks.capacity.gtb.mvc.common.constants.ExceptionMessageConstants;
+
 public class UserNameOrPasswordWrongException extends Exception{
-    private String message = "用户名或密码错误";
+    private String message = ExceptionMessageConstants.USER_NAME_OR_PASSWORD_WRONG;
 
     @Override
     public String getMessage() {

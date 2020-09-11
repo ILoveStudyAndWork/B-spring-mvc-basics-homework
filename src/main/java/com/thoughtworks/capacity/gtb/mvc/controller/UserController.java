@@ -1,13 +1,18 @@
 package com.thoughtworks.capacity.gtb.mvc.controller;
 
-import com.thoughtworks.capacity.gtb.mvc.domain.User;
+import com.thoughtworks.capacity.gtb.mvc.common.constants.ExceptionMessageConstants;
 import com.thoughtworks.capacity.gtb.mvc.domain.User;
 import com.thoughtworks.capacity.gtb.mvc.service.UserService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
+@Validated
 @RestController
 public class UserController {
 
@@ -18,15 +23,22 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid User user){
+    @ResponseStatus(HttpStatus.CREATED)
+    public void register(@RequestBody @Valid User user){
         userService.register(user);
-        return ResponseEntity.created(null).build();
     }
 
     @GetMapping("/login")
-    public ResponseEntity<User> login(@RequestParam String username,
-                                      @RequestParam String password) throws Exception {
-        return ResponseEntity.ok(userService.login(username,password));
+    public User login(@RequestParam
+                      @Size(max = 10,min = 3,message = ExceptionMessageConstants.USER_NAME_NOT_VALID)
+                      @NotEmpty(message = ExceptionMessageConstants.USER_NAME_NOT_VALID)
+                      @Pattern(regexp = "^[\\u4e00-\\u9fa5_a-zA-Z0-9]+$",message = ExceptionMessageConstants.USER_NAME_NOT_VALID)
+                          String username,
+                      @RequestParam
+                      @NotEmpty(message = ExceptionMessageConstants.PASSWORD_NOT_VALID)
+                      @Size(max = 12,min = 5,message = ExceptionMessageConstants.PASSWORD_NOT_VALID)
+                          String password) throws Exception {
+        return userService.login(username,password);
 
     }
 }

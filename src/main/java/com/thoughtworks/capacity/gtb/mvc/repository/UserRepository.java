@@ -5,20 +5,18 @@ import com.thoughtworks.capacity.gtb.mvc.exception.UserNotExistException;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class UserRepository {
-    static List<User> users;
-
+    private static List<User> users;
 
     public UserRepository(){
         users = new ArrayList<>();
     }
 
-    public void addUser(User user){
+    public void save(User user){
         users.add(user);
     }
 
-    public Boolean contain(String username){
+    public boolean isExistByUsername(String username){
         for (int i = 0; i < users.size(); i++){
             if (users.get(i).getUsername().equals(username)) {
                 return true;
@@ -27,11 +25,11 @@ public class UserRepository {
         return false;
     }
 
-    public int size(){
+    public int count(){
         return users.size();
     }
 
-    public User getUserByUserName(String username) throws UserNotExistException {
+    public User findUserByUserName(String username) throws UserNotExistException {
         for (int i = 0; i < users.size(); i++){
             if (users.get(i).getUsername().equals(username)) {
                 return users.get(i);
